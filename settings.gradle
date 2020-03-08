@@ -1,2 +1,2 @@
 include ':sys'
-rootProject.name='BBK2KeyExt'
+rootProject.name='FullKeyboard'

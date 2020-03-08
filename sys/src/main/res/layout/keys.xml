@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/black">
     <!--
         android:hint is misused for representing key code information.
         format: [CSAW]* \d+ '-' \d+
@@ -15,447 +16,510 @@
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="32sp"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:orientation="horizontal">
-            <Button
+
+        <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F1"
+            android:background="@drawable/button_hexagon"
             android:hint="131-59"
+            android:text="F1"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F2"
+            android:background="@drawable/button_hexagon"
             android:hint="132-60"
+            android:text="F2"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F3"
+            android:background="@drawable/button_hexagon"
             android:hint="133-61"
+            android:text="F3"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F4"
+            android:background="@drawable/button_hexagon"
             android:hint="134-62"
+            android:text="F4"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F5"
+            android:background="@drawable/button_hexagon"
             android:hint="135-63"
+            android:text="F5"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F6"
+            android:background="@drawable/button_hexagon"
             android:hint="136-64"
+            android:text="F6"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F7"
+            android:background="@drawable/button_hexagon"
             android:hint="137-65"
+            android:text="F7"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F8"
+            android:background="@drawable/button_hexagon"
             android:hint="138-66"
+            android:text="F8"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F9"
+            android:background="@drawable/button_hexagon"
             android:hint="139-67"
+            android:text="F9"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F10"
+            android:background="@drawable/button_hexagon"
             android:hint="140-68"
+            android:text="F10"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F11"
+            android:background="@drawable/button_hexagon"
             android:hint="141-87"
+            android:text="F11"
             android:textSize="12sp" />
+
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="F12"
+            android:background="@drawable/button_hexagon"
             android:hint="142-88"
+            android:text="F12"
             android:textSize="12sp" />
     </LinearLayout>
+
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="32sp"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:orientation="horizontal">
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="~"
+            android:background="@drawable/button_hexagon"
             android:hint="S68-41"
+            android:text="~"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="`"
+            android:background="@drawable/button_hexagon"
             android:hint="68-41"
+            android:text="`"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="$"
+            android:background="@drawable/button_hexagon"
             android:hint="S11-5"
+            android:text="$"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="%"
+            android:background="@drawable/button_hexagon"
             android:hint="S12-6"
+            android:text="%"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="^"
+            android:background="@drawable/button_hexagon"
             android:hint="S13-7"
+            android:text="^"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="&amp;"
+            android:background="@drawable/button_hexagon"
             android:hint="S14-8"
+            android:text="&amp;"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="="
+            android:background="@drawable/button_hexagon"
             android:hint="70-13"
+            android:text="="
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="|"
+            android:background="@drawable/button_hexagon"
             android:hint="S73-43"
+            android:text="|"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="\\"
+            android:background="@drawable/button_hexagon"
             android:hint="73-43"
+            android:text="\\"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Ins"
+            android:background="@drawable/button_hexagon"
             android:hint="124-110"
+            android:text="Ins"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Del"
+            android:background="@drawable/button_hexagon"
             android:hint="112-111"
+            android:text="Del"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/button_hexagon"
             android:text="⚙"
             android:textSize="9sp" />
     </LinearLayout>
+
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="32sp"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:orientation="horizontal">
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Esc"
+            android:background="@drawable/button_hexagon"
             android:hint="111-1"
+            android:text="Esc"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Caps"
+            android:background="@drawable/button_hexagon"
             android:hint="115-58"
+            android:text="Caps"
             android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="&lt;"
+            android:background="@drawable/button_hexagon"
             android:hint="S55-51"
+            android:text="&lt;"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="&gt;"
+            android:background="@drawable/button_hexagon"
             android:hint="S56-52"
+            android:text="&gt;"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="["
+            android:background="@drawable/button_hexagon"
             android:hint="71-26"
+            android:text="["
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="]"
+            android:background="@drawable/button_hexagon"
             android:hint="72-27"
+            android:text="]"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="{"
+            android:background="@drawable/button_hexagon"
             android:hint="S71-26"
+            android:text="{"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="}"
+            android:background="@drawable/button_hexagon"
             android:hint="S72-27"
+            android:text="}"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Home"
+            android:background="@drawable/button_hexagon"
             android:hint="122-102"
+            android:text="Home"
             android:textSize="8sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="↑"
+            android:background="@drawable/button_hexagon"
             android:hint="19-103"
+            android:text="↑"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="End"
+            android:background="@drawable/button_hexagon"
             android:hint="123-107"
+            android:text="End"
             android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="PgUp"
+            android:background="@drawable/button_hexagon"
             android:hint="92-104"
+            android:text="PgUp"
             android:textSize="9sp" />
     </LinearLayout>
+
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="32sp"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:orientation="horizontal">
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="↹"
+            android:background="@drawable/button_hexagon"
             android:hint="61-15"
+            android:text="↹"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Ctrl"
+            android:background="@drawable/button_hexagon"
             android:hint="113-29"
+            android:text="Ctrl"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Alt"
+            android:background="@drawable/button_hexagon"
             android:hint="57-56"
+            android:text="Alt"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="⊞"
+            android:background="@drawable/button_hexagon"
             android:hint="117-125"
+            android:text="⊞"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="▤"
+            android:background="@drawable/button_hexagon"
             android:hint="82-127"
+            android:text="▤"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="PrtSc"
+            android:background="@drawable/button_hexagon"
             android:hint="120-99"
+            android:text="PrtSc"
             android:textSize="8sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="ScrLk"
+            android:background="@drawable/button_hexagon"
             android:hint="116-70"
+            android:text="ScrLk"
             android:textSize="8sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Break"
+            android:background="@drawable/button_hexagon"
             android:hint="121-119"
+            android:text="Break"
             android:textSize="8sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="←"
+            android:background="@drawable/button_hexagon"
             android:hint="21-105"
+            android:text="←"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="↓"
+            android:background="@drawable/button_hexagon"
             android:hint="20-108"
+            android:text="↓"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="→"
+            android:background="@drawable/button_hexagon"
             android:hint="22-106"
+            android:text="→"
             android:textSize="12sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="PgDn"
+            android:background="@drawable/button_hexagon"
             android:hint="93-109"
+            android:text="PgDn"
             android:textSize="9sp" />
     </LinearLayout>
 </LinearLayout>

@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "ime.bbk2kext"
+        applicationId "ime.fullkeyboard"
         minSdkVersion 27
         targetSdkVersion 27
         versionCode 1

@@ -1,8 +1,7 @@
-package ime.bbk2keyext
+package ime.fullkeyboard
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.inputmethodservice.InputMethodService
 import android.os.Handler
 import android.os.SystemClock
@@ -13,7 +12,7 @@ import android.widget.LinearLayout
 import android.view.inputmethod.InputMethodManager
 import kotlin.collections.ArrayList
 
-class KeyExtension : InputMethodService() {
+class FullKeyboard : InputMethodService() {
     val logOn = false
     val tag = "BBK2KEXT"
 
@@ -127,20 +126,20 @@ class KeyExtension : InputMethodService() {
                                 val m = modifierKeyToMetaState[keyCode]!!
                                 if ((modifierState and m) != 0) {
                                     modifierState = modifierState and m.inv()
-                                    (v as Button).setBackgroundColor(Color.BLACK)
+                                    (v as Button).isPressed = false
                                     modifierReleasing = true
                                 } else {
                                     modifierState = modifierState or m
-                                    (v as Button).setBackgroundColor(Color.DKGRAY)
+                                    (v as Button).isPressed = true
                                 }
                             } else if (isLock) {
                                 val m = lockKeyToMetaState[keyCode]!!
                                 if ((lockState and m) != 0) {
                                     lockState = lockState and m.inv()
-                                    (v as Button).setBackgroundColor(Color.BLACK)
+                                    (v as Button).isPressed = false
                                 } else {
                                     lockState = lockState or m
-                                    (v as Button).setBackgroundColor(Color.DKGRAY)
+                                    (v as Button).isPressed = true
                                 }
                             } else {
                                 var repeatCount = 0
@@ -167,7 +166,7 @@ class KeyExtension : InputMethodService() {
                             val onRelease: () -> Unit = {
                                 if (isModifier) {
                                     modifierState = modifierState and modifierKeyToMetaState[keyCode]!!.inv()
-                                    (v as Button).setBackgroundColor(Color.BLACK)
+                                    (v as Button).isPressed = false
                                 }
                                 for (k in keySequences.reversed()) {
                                     val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
@@ -199,7 +198,7 @@ class KeyExtension : InputMethodService() {
                 })
                 if (isModifier) {
                     resetModifiers.add {
-                        keyButton.setBackgroundColor(Color.BLACK)
+                        keyButton.isPressed = false
                     }
                 }
             }
