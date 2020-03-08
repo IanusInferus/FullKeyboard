@@ -13,8 +13,8 @@ import android.view.inputmethod.InputMethodManager
 import kotlin.collections.ArrayList
 
 class FullKeyboard : InputMethodService() {
-    val logOn = false
-    val tag = "BBK2KEXT"
+    val logOn = true
+    val tag = "FLKBD"
 
     val modifierKeyToMetaState = hashMapOf(
             Pair(KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON),
@@ -81,7 +81,7 @@ class FullKeyboard : InputMethodService() {
         for (rowIndex in 0 until keyboard.childCount) {
             val row = keyboard.getChildAt(rowIndex) as LinearLayout
             for (keyIndex in 0 until row.childCount) {
-                val keyButton = row.getChildAt(keyIndex) as Button
+                val keyButton = row.getChildAt(keyIndex) as? Button ?: continue
                 val keyInfo = keyButton.hint?.toString() ?: ""
                 if (keyInfo == "") { continue }
                 val rKeyInfo = Regex("""(?<Modifiers>[CSAW]*)(?<KeyCode>\d+)-(?<ScanCode>\d+)""")
@@ -109,11 +109,18 @@ class FullKeyboard : InputMethodService() {
                 val isModifier = modifierKeyToMetaState.contains(keyCode)
                 val isLock = lockKeyToMetaState.contains(keyCode)
                 var repeat: Runnable? = null
+                var isIgnored = false
                 keyButton.setOnTouchListener(object : View.OnTouchListener {
                     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                         if (v == null || event == null) { return false }
                         val ic = currentInputConnection
                         if (event.action == MotionEvent.ACTION_DOWN) {
+                            val x = event.x / Math.max(keyButton.width, 1) - 0.5
+                            val y = event.y / Math.max(keyButton.height, 1) - 0.5
+                            val d = Math.sqrt(x * x + y * y)
+                            if (logOn) { Log.i(tag, "distance ${d}") }
+                            isIgnored = d > 0.3 //not hit outside a circle
+                            if (isIgnored) { return false }
                             currentPressingKeys += 1
                             currentPressedKeys += 1
                             for (k in keySequences) {
@@ -126,22 +133,23 @@ class FullKeyboard : InputMethodService() {
                                 val m = modifierKeyToMetaState[keyCode]!!
                                 if ((modifierState and m) != 0) {
                                     modifierState = modifierState and m.inv()
-                                    (v as Button).isPressed = false
+                                    keyButton.isPressed = false
                                     modifierReleasing = true
                                 } else {
                                     modifierState = modifierState or m
-                                    (v as Button).isPressed = true
+                                    keyButton.isPressed = true
                                 }
                             } else if (isLock) {
                                 val m = lockKeyToMetaState[keyCode]!!
                                 if ((lockState and m) != 0) {
                                     lockState = lockState and m.inv()
-                                    (v as Button).isPressed = false
+                                    keyButton.isPressed = false
                                 } else {
                                     lockState = lockState or m
-                                    (v as Button).isPressed = true
+                                    keyButton.isPressed = true
                                 }
                             } else {
+                                keyButton.isPressed = true
                                 var repeatCount = 0
                                 repeat = Runnable {
                                     val time = SystemClock.uptimeMillis()
@@ -158,6 +166,10 @@ class FullKeyboard : InputMethodService() {
                             }
                             return true
                         } else if (event.action == MotionEvent.ACTION_UP) {
+                            if (isIgnored) {
+                                isIgnored = false
+                                return false
+                            }
                             if (repeat != null) {
                                 handler.removeCallbacks(repeat)
                                 repeat = null
@@ -166,8 +178,8 @@ class FullKeyboard : InputMethodService() {
                             val onRelease: () -> Unit = {
                                 if (isModifier) {
                                     modifierState = modifierState and modifierKeyToMetaState[keyCode]!!.inv()
-                                    (v as Button).isPressed = false
                                 }
+                                keyButton.isPressed = false
                                 for (k in keySequences.reversed()) {
                                     val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
                                     if (logOn) { Log.i(tag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
@@ -190,6 +202,7 @@ class FullKeyboard : InputMethodService() {
                             }
                             return true
                         } else if (event.action == MotionEvent.ACTION_CANCEL) {
+                            isIgnored = false
                             finish()
                             return true
                         }
