@@ -2,6 +2,7 @@ package ime.fullkeyboard
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Matrix
 import android.inputmethodservice.InputMethodService
 import android.os.Handler
 import android.os.SystemClock
@@ -14,7 +15,7 @@ import kotlin.collections.ArrayList
 
 class FullKeyboard : InputMethodService() {
     val logOn = true
-    val tag = "FLKBD"
+    val logTag = "FLKBD"
 
     val modifierKeyToMetaState = hashMapOf(
             Pair(KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON),
@@ -74,12 +75,12 @@ class FullKeyboard : InputMethodService() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateInputView(): View {
-        val keyboard = layoutInflater.inflate(R.layout.keys, null) as LinearLayout
+        val keys = layoutInflater.inflate(R.layout.keys, null) as LinearLayout
         val handler = Handler()
         val initialInterval: Long = 500
         val normalInterval: Long = 50
-        for (rowIndex in 0 until keyboard.childCount) {
-            val row = keyboard.getChildAt(rowIndex) as LinearLayout
+        for (rowIndex in 0 until keys.childCount) {
+            val row = keys.getChildAt(rowIndex) as LinearLayout
             for (keyIndex in 0 until row.childCount) {
                 val keyButton = row.getChildAt(keyIndex) as? Button ?: continue
                 val keyInfo = keyButton.hint?.toString() ?: ""
@@ -109,105 +110,95 @@ class FullKeyboard : InputMethodService() {
                 val isModifier = modifierKeyToMetaState.contains(keyCode)
                 val isLock = lockKeyToMetaState.contains(keyCode)
                 var repeat: Runnable? = null
-                var isIgnored = false
-                keyButton.setOnTouchListener(object : View.OnTouchListener {
-                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                        if (v == null || event == null) { return false }
-                        val ic = currentInputConnection
-                        if (event.action == MotionEvent.ACTION_DOWN) {
-                            val x = event.x / Math.max(keyButton.width, 1) - 0.5
-                            val y = event.y / Math.max(keyButton.height, 1) - 0.5
-                            val d = Math.sqrt(x * x + y * y)
-                            if (logOn) { Log.i(tag, "distance ${d}") }
-                            isIgnored = d > 0.3 //not hit outside a circle
-                            if (isIgnored) { return false }
-                            currentPressingKeys += 1
-                            currentPressedKeys += 1
-                            for (k in keySequences) {
-                                val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_DOWN, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
-                                if (logOn) { Log.i(tag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
-                                ic.sendKeyEvent(e)
-                            }
-                            v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_PRESS)
-                            if (isModifier) {
-                                val m = modifierKeyToMetaState[keyCode]!!
-                                if ((modifierState and m) != 0) {
-                                    modifierState = modifierState and m.inv()
-                                    keyButton.isPressed = false
-                                    modifierReleasing = true
-                                } else {
-                                    modifierState = modifierState or m
-                                    keyButton.isPressed = true
-                                }
-                            } else if (isLock) {
-                                val m = lockKeyToMetaState[keyCode]!!
-                                if ((lockState and m) != 0) {
-                                    lockState = lockState and m.inv()
-                                    keyButton.isPressed = false
-                                } else {
-                                    lockState = lockState or m
-                                    keyButton.isPressed = true
-                                }
-                            } else {
-                                keyButton.isPressed = true
-                                var repeatCount = 0
-                                repeat = Runnable {
-                                    val time = SystemClock.uptimeMillis()
-                                    for (k in keySequences) {
-                                        val e = KeyEvent(event.downTime, time, KeyEvent.ACTION_DOWN, k.first, repeatCount, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
-                                        if (logOn) { Log.i(tag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
-                                        ic.sendKeyEvent(e)
-                                    }
-                                    v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_PRESS)
-                                    repeatCount += 1
-                                    handler.postDelayed(repeat, normalInterval)
-                                }
-                                handler.postDelayed(repeat, initialInterval)
-                            }
-                            return true
-                        } else if (event.action == MotionEvent.ACTION_UP) {
-                            if (isIgnored) {
-                                isIgnored = false
-                                return false
-                            }
-                            if (repeat != null) {
-                                handler.removeCallbacks(repeat)
-                                repeat = null
-                            }
-                            currentPressingKeys -= 1
-                            val onRelease: () -> Unit = {
-                                if (isModifier) {
-                                    modifierState = modifierState and modifierKeyToMetaState[keyCode]!!.inv()
-                                }
+                keyButton.setOnTouchListener(fun(_: View?, event: MotionEvent?): Boolean {
+                    if (event == null) { return false }
+                    val ic = currentInputConnection
+                    if (event.action == MotionEvent.ACTION_DOWN) {
+                        currentPressingKeys += 1
+                        currentPressedKeys += 1
+                        for (k in keySequences) {
+                            val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_DOWN, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
+                            if (logOn) { Log.i(logTag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
+                            ic.sendKeyEvent(e)
+                        }
+                        keyButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_PRESS)
+                        if (isModifier) {
+                            val m = modifierKeyToMetaState[keyCode]!!
+                            if ((modifierState and m) != 0) {
+                                modifierState = modifierState and m.inv()
                                 keyButton.isPressed = false
-                                for (k in keySequences.reversed()) {
-                                    val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
-                                    if (logOn) { Log.i(tag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
+                                modifierReleasing = true
+                            } else {
+                                modifierState = modifierState or m
+                                keyButton.isPressed = true
+                            }
+                        } else if (isLock) {
+                            val m = lockKeyToMetaState[keyCode]!!
+                            if ((lockState and m) != 0) {
+                                lockState = lockState and m.inv()
+                                keyButton.isPressed = false
+                            } else {
+                                lockState = lockState or m
+                                keyButton.isPressed = true
+                            }
+                        } else {
+                            keyButton.isPressed = true
+                            var repeatCount = 0
+                            repeat = Runnable {
+                                val time = SystemClock.uptimeMillis()
+                                for (k in keySequences) {
+                                    val e = KeyEvent(event.downTime, time, KeyEvent.ACTION_DOWN, k.first, repeatCount, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
+                                    if (logOn) { Log.i(logTag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
                                     ic.sendKeyEvent(e)
                                 }
-                                v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_RELEASE)
+                                keyButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_PRESS)
+                                repeatCount += 1
+                                handler.postDelayed(repeat, normalInterval)
                             }
-                            if (isModifier && (currentPressedKeys <= 1) && !modifierReleasing) {
-                                releaseModifiers.add(onRelease)
-                            } else {
-                                onRelease()
-                                for (r in releaseModifiers.reversed()) {
-                                    r()
-                                }
-                                releaseModifiers.clear()
-                            }
-                            if (currentPressingKeys == 0) {
-                                currentPressedKeys = 0
-                                modifierReleasing = false
-                            }
-                            return true
-                        } else if (event.action == MotionEvent.ACTION_CANCEL) {
-                            isIgnored = false
-                            finish()
-                            return true
+                            handler.postDelayed(repeat, initialInterval)
                         }
-                        return false
+                        return true
+                    } else if (event.action == MotionEvent.ACTION_UP) {
+                        if (repeat != null) {
+                            handler.removeCallbacks(repeat)
+                            repeat = null
+                        }
+                        currentPressingKeys -= 1
+                        val onRelease: () -> Unit = {
+                            if (isModifier) {
+                                modifierState = modifierState and modifierKeyToMetaState[keyCode]!!.inv()
+                            }
+                            keyButton.isPressed = false
+                            for (k in keySequences.reversed()) {
+                                val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
+                                if (logOn) { Log.i(logTag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
+                                ic.sendKeyEvent(e)
+                            }
+                            keyButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_RELEASE)
+                        }
+                        if (isModifier && (currentPressedKeys <= 1) && !modifierReleasing) {
+                            releaseModifiers.add(onRelease)
+                        } else {
+                            onRelease()
+                            for (r in releaseModifiers.reversed()) {
+                                r()
+                            }
+                            releaseModifiers.clear()
+                        }
+                        if (currentPressingKeys == 0) {
+                            currentPressedKeys = 0
+                            modifierReleasing = false
+                        }
+                        return true
+                    } else if (event.action == MotionEvent.ACTION_CANCEL) {
+                        if (repeat != null) {
+                            handler.removeCallbacks(repeat)
+                            repeat = null
+                        }
+                        finish()
+                        return true
                     }
+                    return false
                 })
                 if (isModifier) {
                     resetModifiers.add {
@@ -216,6 +207,49 @@ class FullKeyboard : InputMethodService() {
                 }
             }
         }
+        var currentButton: Button? = null
+        val keyboard = object : LinearLayout(this.baseContext) {
+            override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+                if (event == null) { return false }
+                var minDistance = Double.MAX_VALUE
+                var pressedRow: LinearLayout? = null
+                var pressedButton: Button? = null
+                for (rowIndex in 0 until keys.childCount) {
+                    val row = keys.getChildAt(rowIndex) as LinearLayout
+                    for (keyIndex in 0 until row.childCount) {
+                        val keyButton = row.getChildAt(keyIndex) as? Button ?: continue
+                        val x = (event.x - row.x - keyButton.x) / Math.max(keyButton.width, 1) - 0.5
+                        val y = (event.y - row.y - keyButton.y) / Math.max(keyButton.height, 1) - 0.5
+                        val d = Math.sqrt(x * x + y * y)
+                        if (d < minDistance) {
+                            minDistance = d
+                            pressedRow = row
+                            pressedButton = keyButton
+                        }
+                    }
+                }
+                if (logOn) { Log.i(logTag, "distance ${minDistance} ${pressedButton?.text ?: ""}") }
+                if ((currentButton != null) && (currentButton != pressedButton)) {
+                    currentButton!!.dispatchTouchEvent(MotionEvent.obtain(event.downTime, event.eventTime, MotionEvent.ACTION_CANCEL, event.x - pressedRow!!.x - currentButton!!.x, event.y - pressedRow!!.y - currentButton!!.y, event.metaState))
+                    currentButton = null
+                }
+                if ((minDistance > 0.4) && (event.action != MotionEvent.ACTION_UP) && (event.action != MotionEvent.ACTION_CANCEL)) {
+                    pressedButton = null
+                }
+                if (pressedButton != null) {
+                    if ((event.action != MotionEvent.ACTION_UP) && (event.action != MotionEvent.ACTION_CANCEL)) {
+                        currentButton = pressedButton
+                    }
+                    val childEvent = MotionEvent.obtain(event)
+                    val m = Matrix()
+                    m.postTranslate(-pressedRow!!.x - pressedButton.x, -pressedRow!!.y - pressedButton.y)
+                    childEvent.transform(m)
+                    return pressedButton.dispatchTouchEvent(event)
+                }
+                return super.onInterceptTouchEvent(event)
+            }
+        }
+        keyboard.addView(keys)
         return keyboard
     }
 
@@ -287,11 +321,11 @@ class FullKeyboard : InputMethodService() {
         } else if (physicalAltOn) {
             val p = phyiscalKeyboardAltMapping[event.keyCode] ?: Triple(event.keyCode, 0, event.keyCode)
             val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_DOWN, p.first, event.repeatCount, modifierState or lockState or (event.metaState and KeyEvent.META_ALT_MASK.inv()) or p.second, KeyCharacterMap.VIRTUAL_KEYBOARD, p.third, event.flags)
-            if (logOn) { Log.i(tag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
+            if (logOn) { Log.i(logTag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
             ic.sendKeyEvent(e)
         } else {
             val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_DOWN, event.keyCode, event.repeatCount, modifierState or lockState or event.metaState, KeyCharacterMap.VIRTUAL_KEYBOARD, event.scanCode, event.flags)
-            if (logOn) { Log.i(tag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
+            if (logOn) { Log.i(logTag, "down ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
             ic.sendKeyEvent(e)
         }
         if (isModifier && (event.repeatCount == 0)) {
@@ -356,11 +390,11 @@ class FullKeyboard : InputMethodService() {
             } else if (physicalAltOn) {
                 val p = phyiscalKeyboardAltMapping[event.keyCode] ?: Triple(event.keyCode, 0, event.keyCode)
                 val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, p.first, event.repeatCount, modifierState or lockState or (event.metaState and KeyEvent.META_ALT_MASK.inv()) or p.second, KeyCharacterMap.VIRTUAL_KEYBOARD, p.third, event.flags)
-                Log.i(tag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}")
+                Log.i(logTag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}")
                 ic.sendKeyEvent(e)
             } else {
                 val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, event.keyCode, event.repeatCount, modifierState or lockState or event.metaState, KeyCharacterMap.VIRTUAL_KEYBOARD, event.scanCode, event.flags)
-                Log.i(tag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}")
+                Log.i(logTag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}")
                 ic.sendKeyEvent(e)
             }
         }

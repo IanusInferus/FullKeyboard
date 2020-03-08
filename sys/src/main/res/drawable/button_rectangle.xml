@@ -3,19 +3,19 @@
     <item android:state_pressed="true">
         <vector
             android:width="26dp"
-            android:height="28dp"
+            android:height="26dp"
             android:viewportWidth="26"
-            android:viewportHeight="28">
-            <path android:fillColor="#7F7F7F" android:pathData="M1,7L13,0L25,7L25,21L13,28L1,21Z" />
+            android:viewportHeight="26">
+            <path android:fillColor="#7F7F7F" android:pathData="M1,1L25,1L25,25L1,25Z" />
         </vector>
     </item>
     <item>
         <vector
             android:width="26dp"
-            android:height="28dp"
+            android:height="26dp"
             android:viewportWidth="26"
-            android:viewportHeight="28">
-            <path android:fillColor="#3F3F3F" android:pathData="M1,7L13,0L25,7L25,21L13,28L1,21Z" />
+            android:viewportHeight="26">
+            <path android:fillColor="#3F3F3F" android:pathData="M1,1L25,1L25,25L1,25Z" />
         </vector>
     </item>
 </selector>
