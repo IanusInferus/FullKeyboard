@@ -167,8 +167,11 @@ class FullKeyboard : InputMethodService() {
                         val onRelease: () -> Unit = {
                             if (isModifier) {
                                 modifierState = modifierState and modifierKeyToMetaState[keyCode]!!.inv()
+                                keyButton.isPressed = false
+                            } else if (isLock) {
+                            } else {
+                                keyButton.isPressed = false
                             }
-                            keyButton.isPressed = false
                             for (k in keySequences.reversed()) {
                                 val e = KeyEvent(event.downTime, event.eventTime, KeyEvent.ACTION_UP, k.first, 0, modifierState or lockState or k.second, KeyCharacterMap.VIRTUAL_KEYBOARD, k.third)
                                 if (logOn) { Log.i(logTag, "up ${e.downTime} event ${e.eventTime} keyCode ${e.keyCode} scanCode ${e.scanCode} number ${e.number} unicode ${e.unicodeChar} rep ${e.repeatCount} ms ${e.metaState}") }
@@ -218,6 +221,7 @@ class FullKeyboard : InputMethodService() {
                     val row = keys.getChildAt(rowIndex) as LinearLayout
                     for (keyIndex in 0 until row.childCount) {
                         val keyButton = row.getChildAt(keyIndex) as? Button ?: continue
+                        if ((currentButton != null) && (currentButton != keyButton)) { continue } //keep the same button until received up or cancel
                         val x = (event.x - row.x - keyButton.x) / Math.max(keyButton.width, 1) - 0.5
                         val y = (event.y - row.y - keyButton.y) / Math.max(keyButton.height, 1) - 0.5
                         val d = Math.sqrt(x * x + y * y)
@@ -229,15 +233,13 @@ class FullKeyboard : InputMethodService() {
                     }
                 }
                 if (logOn) { Log.i(logTag, "distance ${minDistance} ${pressedButton?.text ?: ""}") }
-                if ((currentButton != null) && (currentButton != pressedButton)) {
-                    currentButton!!.dispatchTouchEvent(MotionEvent.obtain(event.downTime, event.eventTime, MotionEvent.ACTION_CANCEL, event.x - pressedRow!!.x - currentButton!!.x, event.y - pressedRow!!.y - currentButton!!.y, event.metaState))
-                    currentButton = null
-                }
                 if ((minDistance > 0.4) && (event.action != MotionEvent.ACTION_UP) && (event.action != MotionEvent.ACTION_CANCEL)) {
                     pressedButton = null
                 }
                 if (pressedButton != null) {
-                    if ((event.action != MotionEvent.ACTION_UP) && (event.action != MotionEvent.ACTION_CANCEL)) {
+                    if ((event.action == MotionEvent.ACTION_UP) || (event.action == MotionEvent.ACTION_CANCEL)) {
+                        currentButton = null
+                    } else {
                         currentButton = pressedButton
                     }
                     val childEvent = MotionEvent.obtain(event)
