@@ -1,27 +1,21 @@
-# BlackBerry Key2 Key Extension
+# FullKeyboard
 
 ## Overview
 
-BlackBerry Key2 Key Extension is an IME for BlackBerry Key2 to input additional keys missing on the physical keyboard.
+FullKeyboard is an IME for Android devices to input keys on a 87-key keyboard.
 
-The BlackBerry Key2 keyboard and its built-in IME is designed for business usage, and lacks some essential keys on the desktop computer keyboard, which, makes it inconvenient for developers who make extensive use of [Termux](https://github.com/termux/termux-app) and [Microsoft RDP](https://play.google.com/store/apps/details?id=com.microsoft.rdc.android&hl=en_US).
+We already have [Hacker's Keyboard](https://github.com/klausw/hackerskeyboard) in this area. Why another IME?
 
-[Hacker's Keyboard](https://github.com/klausw/hackerskeyboard) provides these missing keys, but it is not designed for the BlackBerry Key2 keyboard, and is not very space-efficient.
+Recently, I have bought a OnePlus 7T Pro for its full-screen and root capability. Of course, I want to continue to use [Termux](https://github.com/termux/termux-app) and [Microsoft RDP](https://play.google.com/store/apps/details?id=com.microsoft.rdc.android&hl=en_US) the same way as on my BlackBerry Key2. However, there are problems with its modifiers on Microsoft RDP and it is easy to press a wrong key.
 
-Termux provides [extra keys row](https://wiki.termux.com/wiki/Touch_Keyboard) functionality which is a good fit for the BlackBerry Key2 keyboard, but only inside Termux itself.
-
-Combining all these ideas, I finally decided to create an IME specifically designed for BlackBerry Key2 and contains only the missing keys.
+As I have built [BlackBerry Key2 Key Extension](https://github.com/IanusInferus/BBK2KeyExtension) for my Key2, I employ the experience to build this IME.
 
 ## Functionality
 
-![BBK2KeyExt.png](BBK2KeyExt.png)
+![FullKeyboard-Landscape.png](FullKeyboard-Landscape.png)
 
-All keys missing from a 84-key keyboard are added back.
+![FullKeyboard-Portrait.png](FullKeyboard-Portrait.png)
 
 Holding on a key will trigger its keypress multiple times.
 
-Modifiers functions as slow keys, that you can release it and press another normal key to trigger it. Multiple modifiers can be pressed one by one. To trigger a single modifier keypress event, press it twice. To trigger a long shortcut, such as Ctrl+K,D, you'll have to pressing the modifier and press other keys, like on a desktop keyboard.
-
-Sym key is used as a switch for the virtual keyboard. You can force open or close the virtual keyboard at any time without input focus.
-
-The option icon is not implemented now.
+Modifiers functions as slow keys, that you can release it and press another normal key to trigger it. Multiple modifiers can be pressed one by one. To trigger a single modifier keypress event, press it twice. You can not trigger a long shortcut.
