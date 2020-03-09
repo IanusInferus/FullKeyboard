@@ -220,15 +220,10 @@
             android:text="F8"
             android:textSize="12sp" />
 
-        <Button
-            style="@android:style/Widget.Holo.Button.Borderless.Small"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/button_hexagon"
-            android:hint="82-127"
-            android:text="▤"
-            android:textSize="12sp" />
+            android:layout_weight="1" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
