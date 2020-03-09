@@ -20,7 +20,7 @@
         android:background="@android:color/transparent"
         android:orientation="horizontal">
 
-        <TextView
+        <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -270,8 +270,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/button_hexagon"
-            android:hint="68-41"
-            android:text="` ~"
+            android:hint="115-58"
+            android:text="Caps"
             android:textSize="12sp" />
 
         <Button
@@ -401,7 +401,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_hexagon"
             android:hint="73-43"
-            android:text="\\"
+            android:text="\\ |"
             android:textSize="12sp" />
 
         <Button
@@ -430,8 +430,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/button_hexagon"
-            android:hint="117-125"
-            android:text="⊞"
+            android:hint="68-41"
+            android:text="` ~"
             android:textSize="12sp" />
 
         <Button
@@ -472,7 +472,7 @@
             android:background="@drawable/button_hexagon"
             android:hint="92-104"
             android:text="PgUp"
-            android:textSize="9sp" />
+            android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
@@ -687,7 +687,7 @@
             android:background="@drawable/button_hexagon"
             android:hint="122-102"
             android:text="Home"
-            android:textSize="9sp" />
+            android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
@@ -717,7 +717,7 @@
             android:background="@drawable/button_hexagon"
             android:hint="93-109"
             android:text="PgDn"
-            android:textSize="9sp" />
+            android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
@@ -761,7 +761,7 @@
             android:background="@drawable/button_hexagon"
             android:hint="113-29"
             android:text="Ctrl"
-            android:textSize="9sp" />
+            android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
@@ -860,6 +860,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/button_hexagon"
+            android:hint="117-125"
+            android:text="⊞"
+            android:textSize="12sp" />
+
+        <Button
+            style="@android:style/Widget.Holo.Button.Borderless.Small"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_hexagon"
             android:hint="118-126"
             android:text="⊞"
             android:textSize="12sp" />
@@ -882,16 +892,7 @@
             android:background="@drawable/button_hexagon"
             android:hint="114-97"
             android:text="Ctrl"
-            android:textSize="9sp" />
-
-        <Button
-            style="@android:style/Widget.Holo.Button.Borderless.Small"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/button_hexagon"
-            android:text="⚙"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <Button
             style="@android:style/Widget.Holo.Button.Borderless.Small"
