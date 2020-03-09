@@ -236,7 +236,7 @@ class FullKeyboard : InputMethodService() {
                 if ((minDistance > 0.4) && (event.action != MotionEvent.ACTION_UP) && (event.action != MotionEvent.ACTION_CANCEL)) {
                     pressedButton = null
                 }
-                if (pressedButton != null) {
+                if ((pressedButton != null) && (pressedRow != null)) {
                     if ((event.action == MotionEvent.ACTION_UP) || (event.action == MotionEvent.ACTION_CANCEL)) {
                         currentButton = null
                     } else {
@@ -244,7 +244,7 @@ class FullKeyboard : InputMethodService() {
                     }
                     val childEvent = MotionEvent.obtain(event)
                     val m = Matrix()
-                    m.postTranslate(-pressedRow!!.x - pressedButton.x, -pressedRow!!.y - pressedButton.y)
+                    m.postTranslate(-pressedRow.x - pressedButton.x, -pressedRow.y - pressedButton.y)
                     childEvent.transform(m)
                     return pressedButton.dispatchTouchEvent(event)
                 }
