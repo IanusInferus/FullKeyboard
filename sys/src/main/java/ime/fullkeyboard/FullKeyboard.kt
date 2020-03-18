@@ -62,7 +62,7 @@ class FullKeyboard : InputMethodService() {
             Pair(KeyEvent.KEYCODE_M, Triple(KeyEvent.KEYCODE_PERIOD, 0, 52))
     )
 
-    var virtualKeyboardVisible = true
+    var virtualKeyboardVisible: Boolean? = null
     var currentPressedKeys = 0
     var currentPressingKeys = 0
     var modifierState = 0
@@ -257,7 +257,7 @@ class FullKeyboard : InputMethodService() {
 
     @SuppressLint("MissingSuperCall")
     override fun onEvaluateInputViewShown(): Boolean {
-        return virtualKeyboardVisible
+        return virtualKeyboardVisible ?: super.onEvaluateInputViewShown()
     }
 
     override fun onFinishInput() {
